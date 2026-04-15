@@ -1,0 +1,77 @@
+Práctica: El Semáforo (Con horario nocturno)
+¿Qué hace?: Los 3 LEDs siguen la secuencia lógica (Verde -> Amarillo -> Rojo). La "inteligencia" del proyecto es que detecta la hora: si es de noche (después de las 10 PM), deja de funcionar normal y el amarillo parpadea solo para avisar precaución.
+
+Materiales: 3 LEDs (Rojo, Amarillo, Verde), 3 Resistencias, 4 cables jumper.
+
+Conexión:
+
+LED Rojo: Pin físico 11 (GPIO 17).
+
+LED Amarillo: Pin físico 13 (GPIO 27).
+
+LED Verde: Pin físico 15 (GPIO 22).
+
+Tierra Común: Todos los LEDs conectan su pata corta a la línea azul de la protoboard, y esa línea va al Pin físico 6 (GND).
+
+CODIGO 
+import RPi.GPIO as GPIO
+import time
+import datetime
+
+# Configuración de los pines para usar la numeración BCM
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# Definir los pines
+PIN_ROJO = 17
+PIN_AMARILLO = 27
+PIN_VERDE = 22
+
+# Configurar los pines como salida
+GPIO.setup(PIN_ROJO, GPIO.OUT)
+GPIO.setup(PIN_AMARILLO, GPIO.OUT)
+GPIO.setup(PIN_VERDE, GPIO.OUT)
+
+def apagar_todos():
+    GPIO.output(PIN_ROJO, GPIO.LOW)
+    GPIO.output(PIN_AMARILLO, GPIO.LOW)
+    GPIO.output(PIN_VERDE, GPIO.LOW)
+
+print("Iniciando simulación de semáforo. Presiona Ctrl+C para salir.")
+
+try:
+    while True:
+        # Obtener la hora actual (formato 24h)
+        hora_actual = datetime.datetime.now().hour
+
+        # Condición de horario nocturno (22:00 a 04:59)
+        if hora_actual >= 22 or hora_actual < 5:
+            apagar_todos()
+            # En modo nocturno, parpadeamos el amarillo como prevención
+            GPIO.output(PIN_AMARILLO, GPIO.HIGH)
+            time.sleep(1)
+            GPIO.output(PIN_AMARILLO, GPIO.LOW)
+            time.sleep(1)
+        else:
+            # --- Ciclo Normal de Semáforo de Día ---
+            
+            # Luz Verde
+            apagar_todos()
+            GPIO.output(PIN_VERDE, GPIO.HIGH)
+            time.sleep(5)  # Se mantiene 5 segundos
+            
+            # Luz Amarilla
+            apagar_todos()
+            GPIO.output(PIN_AMARILLO, GPIO.HIGH)
+            time.sleep(2)  # Se mantiene 2 segundos
+            
+            # Luz Roja
+            apagar_todos()
+            GPIO.output(PIN_ROJO, GPIO.HIGH)
+            time.sleep(5)  # Se mantiene 5 segundos
+
+except KeyboardInterrupt:
+    # Si presionas Ctrl+C, limpiamos los pines y apagamos todo
+    apagar_todos()
+    GPIO.cleanup()
+    print("\nPrograma finalizado de forma segura.")
