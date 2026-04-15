@@ -1,0 +1,45 @@
+¡Claro que sí! Aquí tienes el resumen de las 3 prácticas sin el código, enfocado solo en el funcionamiento, materiales y la conexión física para que lo tengas todo ordenado.
+
+1. Práctica: El Parpadeo (Blink)
+¿Qué hace?: Es la prueba básica. El LED se enciende por un segundo y se apaga por otro segundo de forma infinita.
+
+Materiales: 1 LED, 1 Resistencia, 2 cables jumper.
+
+Conexión:
+
+Pin de Señal: Pin físico 11 (GPIO 17) va a la resistencia, y de ahí a la pata larga del LED.
+
+Pin de Tierra: Pin físico 6 (GND) va a la pata corta del LED.
+
+CODIGO 
+
+import RPi.GPIO as GPIO
+import time
+
+# Usamos la numeracion BCM (la de los pines verdes del mapa)
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# Pin donde conectamos el LED Rojo
+LED_PIN = 17
+
+# Configurar el pin como salida
+GPIO.setup(LED_PIN, GPIO.OUT)
+
+print("Haciendo parpadear el LED Rojo... (Ctrl+C para detener)")
+
+try:
+    while True:
+        GPIO.output(LED_PIN, GPIO.HIGH) # Encender
+        print("Prendido")
+        time.sleep(1)                   # Esperar 1 segundo
+        
+        GPIO.output(LED_PIN, GPIO.LOW)  # Apagar
+        print("Apagado")
+        time.sleep(1)                   # Esperar 1 segundo
+
+except KeyboardInterrupt:
+    # Si presionas Ctrl+C, apaga el LED y limpia
+    GPIO.output(LED_PIN, GPIO.LOW)
+    GPIO.cleanup()
+    print("\nPrograma terminado")
