@@ -1,0 +1,54 @@
+Práctica: Recorrido con Brillo (PWM)
+¿Qué hace?: Los LEDs se encienden uno tras otro en "cadena" (un recorrido), pero no lo hacen de golpe. Gracias al PWM, cada LED va subiendo su brillo poco a poco hasta el máximo y luego baja hasta apagarse antes de pasar al siguiente.
+
+Materiales: Los mismos del semáforo (3 LEDs, 3 Resistencias, 4 cables).
+
+Conexión:
+
+Exactamente igual a la del semáforo. La diferencia no es el cableado, sino cómo la Raspberry envía la energía (en pulsos rápidos para variar el brillo).
+
+Usa los Pines físicos 11, 13 y 15 para los LEDs y el 6 para la tierra.
+
+
+ CODIGO 
+
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+# Este es el "Vector de Control" que pide el ejercicio
+pines_led = [17, 27, 22]
+objetos_pwm = []
+
+# Configurar pines y arrancar el PWM
+for pin in pines_led:
+    GPIO.setup(pin, GPIO.OUT)
+    # Crear una instancia PWM a 100Hz de frecuencia
+    pwm = GPIO.PWM(pin, 100)
+    pwm.start(0)  # Iniciar con un duty cycle de 0 (0% de brillo)
+    objetos_pwm.append(pwm)
+
+print("Iniciando recorrido LED con PWM. Presiona Ctrl+C para salir.")
+
+try:
+    while True:
+        # Recorremos el vector de LEDs uno por uno
+        for pwm_actual in objetos_pwm:
+            # Aumentar el brillo gradualmente (de 0% a 100% en pasos de 5)
+            for brillo in range(0, 101, 5):
+                pwm_actual.ChangeDutyCycle(brillo)
+                time.sleep(0.02)
+                
+            # Disminuir el brillo gradualmente (de 100% a 0% en pasos de 5)
+            for brillo in range(100, -1, -5):
+                pwm_actual.ChangeDutyCycle(brillo)
+                time.sleep(0.02)
+
+except KeyboardInterrupt:
+    # Detener todo de forma segura
+    for pwm_actual in objetos_pwm:
+        pwm_actual.stop()
+    GPIO.cleanup()
+    print("\nPrograma finalizado.")
