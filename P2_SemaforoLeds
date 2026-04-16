@@ -1,19 +1,4 @@
-Práctica: El Semáforo (Con horario nocturno)
-¿Qué hace?: Los 3 LEDs siguen la secuencia lógica (Verde -> Amarillo -> Rojo). La "inteligencia" del proyecto es que detecta la hora: si es de noche (después de las 10 PM), deja de funcionar normal y el amarillo parpadea solo para avisar precaución.
-
-Materiales: 3 LEDs (Rojo, Amarillo, Verde), 3 Resistencias, 4 cables jumper.
-
-Conexión:
-
-LED Rojo: Pin físico 11 (GPIO 17).
-
-LED Amarillo: Pin físico 13 (GPIO 27).
-
-LED Verde: Pin físico 15 (GPIO 22).
-
-Tierra Común: Todos los LEDs conectan su pata corta a la línea azul de la protoboard, y esa línea va al Pin físico 6 (GND).
-
-CODIGO 
+Práctic 
 import RPi.GPIO as GPIO
 import time
 import datetime
