@@ -1,16 +1,4 @@
-Práctica: Recorrido con Brillo (PWM)
-¿Qué hace?: Los LEDs se encienden uno tras otro en "cadena" (un recorrido), pero no lo hacen de golpe. Gracias al PWM, cada LED va subiendo su brillo poco a poco hasta el máximo y luego baja hasta apagarse antes de pasar al siguiente.
 
-Materiales: Los mismos del semáforo (3 LEDs, 3 Resistencias, 4 cables).
-
-Conexión:
-
-Exactamente igual a la del semáforo. La diferencia no es el cableado, sino cómo la Raspberry envía la energía (en pulsos rápidos para variar el brillo).
-
-Usa los Pines físicos 11, 13 y 15 para los LEDs y el 6 para la tierra.
-
-
- CODIGO 
 
 import RPi.GPIO as GPIO
 import time
