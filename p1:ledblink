@@ -1,17 +1,4 @@
-¡Claro que sí! Aquí tienes el resumen de las 3 prácticas sin el código, enfocado solo en el funcionamiento, materiales y la conexión física para que lo tengas todo ordenado.
-
-1. Práctica: El Parpadeo (Blink)
-¿Qué hace?: Es la prueba básica. El LED se enciende por un segundo y se apaga por otro segundo de forma infinita.
-
-Materiales: 1 LED, 1 Resistencia, 2 cables jumper.
-
-Conexión:
-
-Pin de Señal: Pin físico 11 (GPIO 17) va a la resistencia, y de ahí a la pata larga del LED.
-
-Pin de Tierra: Pin físico 6 (GND) va a la pata corta del LED.
-
-CODIGO 
+ 
 
 import RPi.GPIO as GPIO
 import time
